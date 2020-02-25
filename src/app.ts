@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
+import helmet from "helmet";
 
 require("dotenv").config();
 
@@ -21,6 +22,9 @@ mongoose.connect(
 import couponRoutes from "./routes/couponRoutes";
 
 const app = express();
+if (!dev) {
+  app.use(helmet());
+}
 app.use(json());
 app.use("/coupons", couponRoutes);
 
