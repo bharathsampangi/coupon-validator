@@ -1,8 +1,0 @@
-
-#node modules
-node_modules
-#dist folder
-/dist
-#config
-/config
-.env
