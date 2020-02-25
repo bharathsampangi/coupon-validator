@@ -8,7 +8,7 @@ require("dotenv").config();
 const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 5000;
 
-//const uri: string = "mongodb://localhost:27017/coupon-validator";
+//*const uri: string = "mongodb://localhost:27017/coupon-validator";
 const mongoURI: string = process.env.MONGO_URI!;
 
 mongoose.connect(
