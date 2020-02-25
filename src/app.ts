@@ -34,4 +34,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(port);
+app.listen(port, () => {
+  console.log(`Listening on PORT: ${port}`);
+});
