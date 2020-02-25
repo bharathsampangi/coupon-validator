@@ -27,7 +27,7 @@ export const addFlatCoupon: RequestHandler = async (req, res, next) => {
     end_date: new Date(),
     minimum_amount: 250,
     discount: flatDiscount._id,
-    discountType: DiscountType.FlatDiscount
+    discountType: DiscountType[0]
   });
   await coupon.save();
   res.send("Success");
@@ -46,7 +46,7 @@ export const addPercentCoupon: RequestHandler = async (req, res, next) => {
     end_date: new Date(),
     minimum_amount: 250,
     discount: percentDiscount._id,
-    discountType: DiscountType.PercentDiscount
+    discountType: DiscountType[1]
   });
   await coupon.save();
   res.send("Success");
