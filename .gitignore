@@ -4,5 +4,5 @@ node_modules
 #dist folder
 dist
 #config
-config
+src/config
 .env

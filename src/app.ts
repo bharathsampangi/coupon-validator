@@ -2,18 +2,23 @@ import express, { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
 
-import couponRoutes from "./routes/couponRoutes";
+require("dotenv").config();
 
-const uri: string = "mongodb://localhost:27017/coupon-validator";
+const dev = process.env.NODE_ENV !== "production";
+const port = process.env.PORT || 5000;
+
+//const uri: string = "mongodb://localhost:27017/coupon-validator";
+const mongoURI: string = process.env.MONGO_URI!;
 
 mongoose.connect(
-  uri,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  mongoURI,
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   err => {
-    if (err) return console.log("Error", err.message);
-    console.log("Connected successfully!");
+    if (err) return console.log("DB Connection Error", err.message);
   }
 );
+
+import couponRoutes from "./routes/couponRoutes";
 
 const app = express();
 app.use(json());
@@ -25,4 +30,4 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(5000);
+app.listen(port);
