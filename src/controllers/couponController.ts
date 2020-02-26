@@ -3,6 +3,7 @@ import { RequestHandler } from "express";
 import { Coupon, CouponProps } from "../models/Coupon";
 import { FlatDiscount } from "../models/FlatDiscount";
 import { PercentDiscount } from "../models/PercentDiscount";
+import { validationResult } from "express-validator";
 
 enum DiscountType {
   "FlatDiscount",
@@ -16,40 +17,65 @@ interface ResponseMessage {
 }
 
 export const addFlatCoupon: RequestHandler = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let { discount_amount, coupon_code, minimum_amount, validity } = req.body;
+  let end_date = new Date();
+  end_date.setDate(end_date.getDate() + validity);
+
   const flatDiscount = new FlatDiscount({
-    discount_amount: 200
+    discount_amount
   });
 
   await flatDiscount.save();
 
   const coupon = new Coupon({
-    coupon_code: "Coupon1",
-    end_date: new Date(),
-    minimum_amount: 250,
+    coupon_code,
+    end_date,
+    minimum_amount,
     discount: flatDiscount._id,
     discountType: DiscountType[0]
   });
   await coupon.save();
-  res.send("Success");
+  res.send("Flat Coupon added successfully");
 };
 
 export const addPercentCoupon: RequestHandler = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let {
+    coupon_code,
+    minimum_amount,
+    validity,
+    discount_percentage,
+    maximum_amount
+  } = req.body;
+
+  let end_date = new Date();
+  end_date.setDate(end_date.getDate() + validity);
+
   const percentDiscount = new PercentDiscount({
-    discount_percentage: 50,
-    maximum_amount: 250
+    discount_percentage,
+    maximum_amount
   });
 
   await percentDiscount.save();
 
   const coupon = new Coupon({
-    coupon_code: "Coupon2",
-    end_date: new Date(),
-    minimum_amount: 250,
+    coupon_code,
+    end_date,
+    minimum_amount,
     discount: percentDiscount._id,
     discountType: DiscountType[1]
   });
   await coupon.save();
-  res.send("Success");
+  res.send("Percent coupon added successfully");
 };
 
 export const getCoupon: RequestHandler = async (req, res, next) => {
@@ -72,7 +98,7 @@ export const getCoupon: RequestHandler = async (req, res, next) => {
   next();
 };
 
-export const validateCoupon: RequestHandler = async (req, res, next) => {
+export const validateCoupon: RequestHandler = (req, res, next) => {
   let { total_amount } = req.body;
   const coupon = res.locals.coupon;
 
@@ -111,7 +137,7 @@ const calculatePercentageDiscount = (
   return discount;
 };
 
-export const calculateDiscount: RequestHandler = async (req, res, next) => {
+export const calculateDiscount: RequestHandler = (req, res, next) => {
   let { total_amount } = req.body;
   const coupon = res.locals.coupon;
 

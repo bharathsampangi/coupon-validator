@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
 import helmet from "helmet";
+import "express-validator";
 
 require("dotenv").config();
 
@@ -26,7 +27,7 @@ if (!dev) {
   app.use(helmet());
 }
 app.use(json());
-app.use("/coupons", couponRoutes);
+app.use("/antstack", couponRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({
