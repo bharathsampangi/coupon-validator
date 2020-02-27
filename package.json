@@ -8,13 +8,12 @@
     "npm": "6.12.0"
   },
   "scripts": {
+    "install-all": "npm install & cd client/ && npm install",
     "heroku-postbuild": "tsc & cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "build-ts": "tsc",
     "postinstall": "npm run build-ts",
     "start": "npm run serve",
     "serve": "node dist/app.js",
-    "watch-node": "nodemon dist/app.js",
-    "watch-ts": "tsc -w",
     "dev:build": "tsc -w",
     "dev:run": "nodemon dist/app.js",
     "dev:client": "npm run start --prefix client",
