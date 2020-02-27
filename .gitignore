@@ -3,6 +3,4 @@
 node_modules
 #dist folder
 dist
-#config
-src/config
 .env
