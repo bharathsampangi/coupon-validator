@@ -28,7 +28,11 @@ export const addFlatCoupon: RequestHandler = async (req, res, next) => {
     discount_amount
   });
 
-  await flatDiscount.save();
+  await flatDiscount.save(err => {
+    if (err) {
+      res.status(406).json({ sucess: false, message: err.message });
+    }
+  });
 
   const coupon = new Coupon({
     coupon_code,
@@ -37,10 +41,17 @@ export const addFlatCoupon: RequestHandler = async (req, res, next) => {
     discount: flatDiscount._id,
     discountType: DiscountType[0]
   });
-  await coupon.save();
-  res
-    .status(200)
-    .json({ success: true, message: "Flat Coupon added successfully!" });
+  await coupon.save(err => {
+    if (err) {
+      res.status(406).json({
+        sucess: false,
+        message: err.message
+      });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "Flat Coupon added successfully!" });
+  });
 };
 
 export const addPercentCoupon: RequestHandler = async (req, res, next) => {
@@ -65,7 +76,11 @@ export const addPercentCoupon: RequestHandler = async (req, res, next) => {
     maximum_amount
   });
 
-  await percentDiscount.save();
+  await percentDiscount.save(err => {
+    if (err) {
+      res.status(406).json({ sucess: false, message: err.message });
+    }
+  });
 
   const coupon = new Coupon({
     coupon_code,
@@ -74,10 +89,17 @@ export const addPercentCoupon: RequestHandler = async (req, res, next) => {
     discount: percentDiscount._id,
     discountType: DiscountType[1]
   });
-  await coupon.save();
-  res
-    .status(200)
-    .json({ success: true, message: "Percent coupon added successfully!" });
+  await coupon.save(err => {
+    if (err) {
+      res.status(406).json({
+        sucess: false,
+        message: err.message
+      });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "Percent coupon added successfully!" });
+  });
 };
 
 export const getCoupon: RequestHandler = async (req, res, next) => {

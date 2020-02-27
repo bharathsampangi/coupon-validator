@@ -37,7 +37,7 @@ class AddPercentCoupon extends React.Component {
     });
     let data = await response.json();
     if (data) {
-      data.coupon_code;
+      data.coupon_code = coupon_code;
       this.setState({ data });
       this.setState({ navigate: true });
     } else {
@@ -58,7 +58,7 @@ class AddPercentCoupon extends React.Component {
     }
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Add Percent Coupon</h1>
+        <h3>Add Percent Coupon</h3>
         <div className="form-group">
           <label>Coupon code</label>
           <input

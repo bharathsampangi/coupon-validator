@@ -20,7 +20,7 @@ class Coupon extends React.Component {
     });
     let data = await response.json();
     if (data) {
-      data.coupon_code;
+      data.coupon_code = coupon_code;
       this.setState({ data });
       this.setState({ navigate: true });
     } else {

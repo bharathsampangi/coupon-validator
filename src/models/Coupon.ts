@@ -13,7 +13,11 @@ export interface CouponProps extends Document {
 
 const couponSchema = new Schema(
   {
-    coupon_code: { type: Schema.Types.String, required: true, unique: true },
+    coupon_code: {
+      type: Schema.Types.String,
+      required: true,
+      unique: true
+    },
     start_date: { type: Schema.Types.Date, default: Date.now() },
     end_date: { type: Schema.Types.Date, required: true },
     minimum_amount: { type: Schema.Types.Number, required: true },

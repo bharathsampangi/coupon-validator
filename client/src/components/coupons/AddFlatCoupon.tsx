@@ -29,7 +29,7 @@ class AddFlatCoupon extends React.Component {
     });
     const data = await response.json();
     if (data) {
-      data.coupon_code;
+      data.coupon_code = coupon_code;
       this.setState({ data });
       this.setState({ navigate: true });
     } else {
@@ -50,7 +50,7 @@ class AddFlatCoupon extends React.Component {
     }
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Add Flat Coupon</h1>
+        <h3>Add Flat Coupon</h3>
         <div className="form-group">
           <label>Coupon Code</label>
           <input
