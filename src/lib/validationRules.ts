@@ -1,6 +1,6 @@
-import { body } from "express-validator";
+import { body, ValidationChain } from "express-validator";
 
-export const validateFlatCoupon = () => {
+export const validateFlatCoupon = (): ValidationChain[] => {
   return [
     body("coupon_code")
       .isString()
@@ -17,7 +17,7 @@ export const validateFlatCoupon = () => {
   ];
 };
 
-export const validatePercentCoupon = () => {
+export const validatePercentCoupon = (): ValidationChain[] => {
   return [
     body("coupon_code")
       .isString()

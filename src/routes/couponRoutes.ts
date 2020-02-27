@@ -11,8 +11,9 @@ import {
   validateFlatCoupon,
   validatePercentCoupon
 } from "../lib/validationRules";
+import {checkInput} from "../middlewares/checkInput";
 
-const router = Router();
+const router: Router = Router();
 
 /* Error handler for async / await functions */
 const catchErrors = (fn: Function) => {
@@ -23,6 +24,7 @@ const catchErrors = (fn: Function) => {
 
 router.post(
   "/validate",
+  checkInput,
   catchErrors(getCoupon),
   validateCoupon,
   calculateDiscount

@@ -5,16 +5,7 @@ import { FlatDiscount } from "../models/FlatDiscount";
 import { PercentDiscount } from "../models/PercentDiscount";
 import { validationResult } from "express-validator";
 
-enum DiscountType {
-  "FlatDiscount",
-  "PercentDiscount"
-}
-
-interface ResponseMessage {
-  valid: boolean;
-  discount: number;
-  message: string;
-}
+import {flatCouponInput, percentCouponInput,DiscountType, ResponseJson} from "../types/coupons";
 
 export const addFlatCoupon: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
@@ -22,7 +13,7 @@ export const addFlatCoupon: RequestHandler = async (req, res, next) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  let { discount_amount, coupon_code, minimum_amount, validity } = req.body;
+  let { discount_amount, coupon_code, minimum_amount, validity } = <flatCouponInput>req.body;
   let end_date = new Date();
   end_date.setDate(end_date.getDate() + validity);
 
@@ -55,7 +46,7 @@ export const addPercentCoupon: RequestHandler = async (req, res, next) => {
     validity,
     discount_percentage,
     maximum_amount
-  } = req.body;
+  } = <percentCouponInput>req.body;
 
   let end_date = new Date();
   end_date.setDate(end_date.getDate() + validity);
@@ -79,7 +70,7 @@ export const addPercentCoupon: RequestHandler = async (req, res, next) => {
 };
 
 export const getCoupon: RequestHandler = async (req, res, next) => {
-  let { coupon_code } = req.body;
+  let { coupon_code } = <{coupon_code: string}>req.body;
 
   coupon_code = coupon_code.trim();
 
@@ -87,7 +78,7 @@ export const getCoupon: RequestHandler = async (req, res, next) => {
   const coupon = coupons.find(coupon => coupon.coupon_code === coupon_code);
 
   if (!coupon) {
-    res.status(404).json({
+    res.status(404).json(<ResponseJson>{
       valid: false,
       discount: 0,
       message: "Sorry, we could not find your coupon!"
@@ -99,13 +90,13 @@ export const getCoupon: RequestHandler = async (req, res, next) => {
 };
 
 export const validateCoupon: RequestHandler = (req, res, next) => {
-  let { total_amount } = req.body;
-  const coupon = res.locals.coupon;
+  let { total_amount } = <{total_amount: number}>req.body;
+  const coupon: CouponProps = res.locals.coupon;
 
   const { end_date, minimum_amount } = <CouponProps>coupon;
 
   if (end_date.getTime() < Date.now()) {
-    res.status(401).json({
+    res.status(401).json(<ResponseJson>{
       valid: false,
       discount: 0,
       message: "Sorry, your coupon has been expired!"
@@ -113,7 +104,7 @@ export const validateCoupon: RequestHandler = (req, res, next) => {
   }
 
   if (total_amount < minimum_amount) {
-    res.status(401).json({
+    res.status(401).json(<ResponseJson>{
       valid: false,
       discount: 0,
       message: "Sorry, your total cart value is less than minimum amount!"
@@ -127,7 +118,7 @@ const calculatePercentageDiscount = (
   percentage: number,
   maxAmount: number,
   total: number
-) => {
+): number => {
   //Expecting percentage to be in Base 10
   percentage = percentage / 100;
   let discount = total * percentage;
@@ -139,24 +130,24 @@ const calculatePercentageDiscount = (
 
 export const calculateDiscount: RequestHandler = (req, res, next) => {
   let { total_amount } = req.body;
-  const coupon = res.locals.coupon;
+  const coupon: CouponProps = res.locals.coupon;
 
   const { discountType } = <CouponProps>coupon;
 
   if (discountType === DiscountType[0]) {
-    const { discount_amount } = <any>coupon!.discount;
+    const { discount_amount } = <{discount_amount: number}>coupon!.discount;
     res
       .status(200)
-      .json({ valid: true, discount: discount_amount, message: "Success" });
+      .json(<ResponseJson>{ valid: true, discount: discount_amount, message: "Success" });
   }
 
-  const { discount_percentage, maximum_amount } = <any>coupon!.discount;
+  const { discount_percentage, maximum_amount } = <{discount_percentage: number, maximum_amount: number}>coupon.discount;
   const discount = calculatePercentageDiscount(
     discount_percentage,
     maximum_amount,
     total_amount
   );
-  res.status(200).json({
+  res.status(200).json(<ResponseJson>{
     valid: true,
     discount,
     message: "Success"

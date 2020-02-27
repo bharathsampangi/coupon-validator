@@ -1,6 +1,6 @@
 import { Schema, model, Model, Document } from "mongoose";
 
-interface PercentDiscountProps extends Document {
+export interface PercentDiscountProps extends Document {
   discount_percent: number;
   maximum_amount: number;
 }
