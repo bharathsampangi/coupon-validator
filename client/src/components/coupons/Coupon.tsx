@@ -6,8 +6,7 @@ class Coupon extends React.Component {
 
   handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    let total = this.state.total_amount;
-    let coupon = this.state.coupon_code;
+    let { coupon_code, total_amount } = this.state;
     const response = await fetch("/api/validate", {
       method: "post",
       headers: {
@@ -15,13 +14,18 @@ class Coupon extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        total_amount: total,
-        coupon_code: coupon
+        total_amount,
+        coupon_code
       })
     });
-    const data = await response.json();
-    this.setState({ data });
-    this.setState({ navigate: true });
+    let data = await response.json();
+    if (data) {
+      data.coupon_code;
+      this.setState({ data });
+      this.setState({ navigate: true });
+    } else {
+      alert("Sorry, for the inconvenience please try again");
+    }
   };
 
   render() {

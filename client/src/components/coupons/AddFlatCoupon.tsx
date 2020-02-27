@@ -28,8 +28,13 @@ class AddFlatCoupon extends React.Component {
       })
     });
     const data = await response.json();
-    this.setState({ data });
-    this.setState({ navigate: true });
+    if (data) {
+      data.coupon_code;
+      this.setState({ data });
+      this.setState({ navigate: true });
+    } else {
+      alert("Sorry, for the inconvenience please try again");
+    }
   };
 
   render() {

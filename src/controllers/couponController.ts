@@ -40,7 +40,7 @@ export const addFlatCoupon: RequestHandler = async (req, res, next) => {
   await coupon.save();
   res
     .status(200)
-    .json({ success: true, message: "Flat Coupon added successfully" });
+    .json({ success: true, message: "Flat Coupon added successfully!" });
 };
 
 export const addPercentCoupon: RequestHandler = async (req, res, next) => {
@@ -77,7 +77,7 @@ export const addPercentCoupon: RequestHandler = async (req, res, next) => {
   await coupon.save();
   res
     .status(200)
-    .json({ success: true, message: "Percent coupon added successfully" });
+    .json({ success: true, message: "Percent coupon added successfully!" });
 };
 
 export const getCoupon: RequestHandler = async (req, res, next) => {
@@ -150,7 +150,7 @@ export const calculateDiscount: RequestHandler = (req, res, next) => {
     res.status(200).json(<ResponseJson>{
       valid: true,
       discount: discount_amount,
-      message: "Success"
+      message: "Success - your coupon has been applied."
     });
   }
 
@@ -165,6 +165,6 @@ export const calculateDiscount: RequestHandler = (req, res, next) => {
   res.status(200).json(<ResponseJson>{
     valid: true,
     discount,
-    message: "Success"
+    message: "Success - your coupon has been applied."
   });
 };

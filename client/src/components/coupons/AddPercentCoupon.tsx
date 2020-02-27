@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 
 class AddPercentCoupon extends React.Component {
   state = {
@@ -6,7 +7,9 @@ class AddPercentCoupon extends React.Component {
     minimum_amount: 0,
     discount_percentage: 0,
     maximum_amount: 0,
-    validity: 0
+    validity: 0,
+    navigate: false,
+    data: ""
   };
 
   handleSubmit = async (event: React.FormEvent) => {
@@ -32,11 +35,27 @@ class AddPercentCoupon extends React.Component {
         validity
       })
     });
-    const data = await response.json();
-    console.log(data);
+    let data = await response.json();
+    if (data) {
+      data.coupon_code;
+      this.setState({ data });
+      this.setState({ navigate: true });
+    } else {
+      alert("Sorry, for the inconvenience please try again");
+    }
   };
 
   render() {
+    if (this.state.navigate) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/status",
+            state: this.state.data
+          }}
+        />
+      );
+    }
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Add Percent Coupon</h1>
