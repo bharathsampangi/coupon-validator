@@ -32,7 +32,7 @@ export const validatePercentCoupon = (): ValidationChain[] => {
       .isNumeric()
       .notEmpty()
       .custom(value => {
-        if (value <= 0 || value >= 100) {
+        if (value < 0 || value > 100) {
           throw new Error("Discount percentage should be between 1 and 100");
         }
         return true;
