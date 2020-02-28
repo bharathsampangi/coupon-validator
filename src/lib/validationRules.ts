@@ -12,7 +12,7 @@ export const validateFlatCoupon = (): ValidationChain[] => {
       .isNumeric()
       .notEmpty(),
     body("validity")
-      .isInt()
+      .isInt({ min: 0 })
       .notEmpty()
   ];
 };
@@ -26,7 +26,7 @@ export const validatePercentCoupon = (): ValidationChain[] => {
       .isNumeric()
       .notEmpty(),
     body("validity")
-      .isInt()
+      .isInt({ min: 0 })
       .notEmpty(),
     body("discount_percentage")
       .isNumeric()
