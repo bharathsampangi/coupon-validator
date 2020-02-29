@@ -69,6 +69,7 @@ class AddFlatCoupon extends React.Component {
             type="number"
             name="minimum_amount"
             className="form-control"
+            min="0"
             required
             onChange={evt => {
               this.setState({ minimum_amount: evt.target.value });
@@ -82,6 +83,7 @@ class AddFlatCoupon extends React.Component {
             name="discount_amount"
             className="form-control"
             required
+            min="0"
             onChange={evt => {
               this.setState({ discount_amount: evt.target.value });
             }}
@@ -94,7 +96,7 @@ class AddFlatCoupon extends React.Component {
             name="validity"
             className="form-control"
             required
-            min="1"
+            min="0"
             max="30"
             onChange={evt => {
               this.setState({ validity: evt.target.value });

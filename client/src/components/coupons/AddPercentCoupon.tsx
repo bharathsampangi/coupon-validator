@@ -78,6 +78,7 @@ class AddPercentCoupon extends React.Component {
             name="minimum_amount"
             className="form-control"
             required
+            min="0"
             onChange={evt => {
               this.setState({ minimum_amount: evt.target.value });
             }}
@@ -103,6 +104,7 @@ class AddPercentCoupon extends React.Component {
             type="number"
             name="maximum_amount"
             className="form-control"
+            min="0"
             required
             onChange={evt => {
               this.setState({ maximum_amount: evt.target.value });

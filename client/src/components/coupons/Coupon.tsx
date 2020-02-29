@@ -60,6 +60,7 @@ class Coupon extends React.Component {
             type="number"
             name="total_amount"
             className="form-control"
+            min="0"
             required
             onChange={evt => {
               this.setState({ total_amount: evt.target.value });
